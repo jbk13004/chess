@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chess Game</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.css" rel="stylesheet">
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #000000; /* This line changes the background color to black */
+    margin: 0;
+    color: #ffffff; /* This is to set the basic text color to white, for visibility against the black background */
+  }
+
+  .board-b72b1 {
+    border: none !important;
+    box-shadow: none !important; /* This line removes any shadow effects */
+  }
+
+
+  [class^="white-"], [class*=" white-"] {
+    background-color: #A8A4A8!important; /* white */
+  }
+  
+  [class^="black-"], [class*=" black-"] {
+    background-color: #606064 !important; /* black */
+  }
+  
+
+</style>
+</head>
+<body>
+
+<div id="board" style="width: 400px"></div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.js"></script>
+<script>
+
+var board = null;
+var game = new Chess();
+
+var config = {
+  draggable: true,
+  position: 'start',
+  onDragStart: onDragStart,
+  onDrop: onDrop,
+  onSnapEnd: onSnapEnd,
+  showNotation: false // Add this line to your existing config
+};
+
+board = Chessboard('board', config);
+
+function onDragStart (source, piece, position, orientation) {
+  // do not pick up pieces if the game is over
+  if (game.game_over()) return false;
+
+  // only pick up pieces for the side to move
+  if ((game.turn() === 'w' && piece.search(/^b/) !== -1) ||
+      (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
+    return false;
+  }
+}
+
+
+function makeRandomMove () {
+  var possibleMoves = game.moves();
+
+  // game over
+  if (possibleMoves.length === 0) {
+    alert('Game over');
+    return;
+  }
+
+  var randomIdx = Math.floor(Math.random() * possibleMoves.length);
+  game.move(possibleMoves[randomIdx]);
+  board.position(game.fen());
+}
+
+function onDrop(source, target) {
+  // see if the move is legal
+  var move = game.move({
+    from: source,
+    to: target,
+    promotion: 'q' // NOTE: always promote to a queen for simplicity
+  });
+
+  // illegal move
+  if (move === null) return 'snapback';
+
+  
+  if (target === 'a8' && move.color === 'w') {
+   
+    window.open('https://www.lbrnthgame.com/h75vt349-8tkv3475tq3h9-ct7k348957gh', '_blank');
+  }
+
+  // make random legal move for opponent
+  window.setTimeout(makeRandomMove, 250);
+}
+
+
+
+
+// update the board position after the piece snap
+// for castling, en passant, pawn promotion
+function onSnapEnd () {
+  board.position(game.fen());
+}
+
+
+// update the board to the current game position
+function updateBoard () {
+  board.position(game.fen());
+}
+
+updateBoard();
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
