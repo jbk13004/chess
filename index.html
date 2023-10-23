@@ -51,7 +51,24 @@ var config = {
   onDragStart: onDragStart,
   onDrop: onDrop,
   onSnapEnd: onSnapEnd,
-  showNotation: false // Add this line to your existing config
+  showNotation: false,
+  pieceTheme: function(piece) {
+    var pieceMap = {
+      'wR': 'https://static1.squarespace.com/static/61677fb4ed3774477e5e74fb/t/6536ea771cd2fd100b519951/1698097794209/wR.png',
+      'wQ': 'https://static1.squarespace.com/static/61677fb4ed3774477e5e74fb/t/6536ead41cd2fd100b51bb39/1698097876228/wQ.png',
+      'wP': 'https://static1.squarespace.com/static/61677fb4ed3774477e5e74fb/t/6536eb05e16b432f6238e8b5/1698097925490/wP.png',
+      'wN': 'https://static1.squarespace.com/static/61677fb4ed3774477e5e74fb/t/6536eb29171ba35fa13d99a7/1698097961789/wN.png',
+      'wK': 'https://static1.squarespace.com/static/61677fb4ed3774477e5e74fb/t/6536eb49c82f58719f303246/1698097993458/wK.png',
+      'wB': 'https://static1.squarespace.com/static/61677fb4ed3774477e5e74fb/t/6536eb6918a70a63d863a3cc/1698098025573/wB.png',
+      'bR': 'https://static1.squarespace.com/static/61677fb4ed3774477e5e74fb/t/6536ebf4107cfb417cffe6fa/1698098174814/bR.png',
+      'bQ': 'https://static1.squarespace.com/static/61677fb4ed3774477e5e74fb/t/6536ec1bc33f11425afeb4a9/1698098204023/bQ.png',
+      'bP': 'https://static1.squarespace.com/static/61677fb4ed3774477e5e74fb/t/6536ec3a3067a677d5baeaab/1698098234722/bP.png',
+      'bN': 'https://static1.squarespace.com/static/61677fb4ed3774477e5e74fb/t/6536ec57692a8920f1b5a9e0/1698098263665/bN.png',
+      'bK': 'https://static1.squarespace.com/static/61677fb4ed3774477e5e74fb/t/6536ed09c27bbc0aca5f0f2b/1698098441657/bK.png',
+      'bB': 'https://static1.squarespace.com/static/61677fb4ed3774477e5e74fb/t/6536ed25e8ec0e5db575709b/1698098469930/bB.png'
+    };
+    return pieceMap[piece] || 'https://www.chess.com/bundles/web/images/offline-play/standard/pieces/neo/90/{piece}.png'; // default images from another source
+  }
 };
 
 board = Chessboard('board', config);
@@ -94,7 +111,7 @@ function onDrop(source, target) {
   if (move === null) return 'snapback';
 
   
-  if (target === 'a8' && move.color === 'w') {
+  if (target === 'a8' && move.color === 'w' && move.piece === 'q') {
    
     window.open('https://www.lbrnthgame.com/h75vt349-8tkv3475tq3h9-ct7k348957gh', '_blank');
   }
